@@ -37,4 +37,5 @@ a los dieciocho dias del mes de marzo del dos mil veintiuno
 >where in this case 3 indicates the number of rows that the table within the document will have, and the next 3 lines describe the table content separated by comma
 
 after these 3 lines you must specify the area
+and lastly a detailed date in spanish
 

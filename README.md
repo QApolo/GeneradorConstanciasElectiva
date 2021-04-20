@@ -1,7 +1,7 @@
 # Generador Constancias Electiva ESCOM
 Script Python 3 that generates pdf files for IPN ESCOM
 
-## Requierements
+## Requirements
 * Python 3+
 * fpdf
 

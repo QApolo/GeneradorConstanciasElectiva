@@ -16,6 +16,7 @@ sudo pip3 install fpdf
 ```
 
 ## Usage
+<!---
 This script takes input from files inside folder **input_data** by default, this does not exist in the repo, you can either create it yourself or execute the main.py once.
 
 ```bash
@@ -39,3 +40,22 @@ a los dieciocho dias del mes de marzo del dos mil veintiuno
 after these 3 lines you must specify the area
 and lastly a detailed date in spanish
 
+-->
+This script takes a CSV file as input, with the following structure:
+
+```
+3
+Club de algoritmia, Nombre Profesor, 100, 2
+Club de algoritmia, Nombre Profesor, 100, 2
+Club de algoritmia, Nombre Profesor, 100, 2
+Area a la que pertenece
+Nombre completo con apellidos
+a los dieciocho dias del mes de marzo del dos mil veintiuno
+
+2
+Club de algoritmia, Nombre Profesor, 100, 2
+Club de algoritmia, Nombre Profesor, 100, 2
+Area a la que pertenece
+Otro Nombre completo con apellidos
+a los dieciocho dias del mes de marzo del dos mil veintiuno
+```

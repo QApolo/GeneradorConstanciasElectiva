@@ -1,3 +1,4 @@
 *.pdf
 *.txt
 .DS_Store
+!body.txt

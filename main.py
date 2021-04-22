@@ -1,5 +1,6 @@
 from document_generator import Document, PersonalData ,INPUT_DATA_PATH, OUTPUT_DATA_PATH
 import os
+import sys
 
 INPUT_CSV = "./input_data.csv"
 if __name__ == '__main__':
@@ -7,7 +8,12 @@ if __name__ == '__main__':
     files = os.listdir(INPUT_DATA_PATH)
     personal_data_list = []
 
-    with open(INPUT_CSV, 'rb') as pd_file:
+    fileInputName = INPUT_CSV
+
+    if len(sys.argv) > 1:
+        fileInputName = sys.argv[1]
+
+    with open(fileInputName, 'rb') as pd_file:
         while True:
             line = pd_file.readline()
             if not line:

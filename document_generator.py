@@ -7,7 +7,6 @@ FECHA = 'FECHA'
 
 DOCUMENT_KEY = "SSEIS/050/2021"
 
-
 LOGO_IPN = "./logoipn.png"
 LOGO_ESCOM = "./logoescom.png"
 
@@ -15,6 +14,57 @@ TITLE_ROW_ACTIVITIES = ["Actividad", "Profesor/Responsable", "Horas", "Semestre"
 
 INPUT_DATA_PATH = "./input_data"
 OUTPUT_DATA_PATH = "./output_data"
+
+class PersonalData:
+    def __init__(self):
+        pass
+
+    #def __init__(self, filename : str):
+        #self.dataFromFile(filename)
+
+    def dataFromFile(self, filename : str):
+        with open(filename, 'rb') as personal_data_namefile:
+            self.rows = []
+            self.data_rows = int(personal_data_namefile.readline().decode('UTF-8'))
+
+            for i in range(self.data_rows):
+                data_row = personal_data_namefile.readline().decode('UTF-8')
+                self.rows.append(data_row.split(','))
+            
+            self.area = personal_data_namefile.readline().decode('UTF-8').strip('\n')
+            self.name = personal_data_namefile.readline().decode('UTF-8').strip('\n')
+            self.date = personal_data_namefile.readline().decode('UTF-8').strip('\n')
+    
+    def setName(self, name):
+        self.name = name
+
+    def setArea(self, area):
+        self.area = area
+
+    def setDate(self, date):
+        self.date = date
+        
+    def setNumberRows(self, nrows):
+        self.data_rows = nrows
+
+    def setRows(self, rows):
+        self.rows = rows
+
+    def getName(self) -> str:
+        return self.name
+
+    def getArea(self) -> str:
+        return self.area
+
+    def getDate(self) -> str:
+        return self.date
+    def getNumberRows(self) -> int:
+        return self.data_rows
+
+    def getRows(self) -> list:
+        return self.rows
+
+
 
 class Document(FPDF):
      def imagex(self):
@@ -55,24 +105,21 @@ class Document(FPDF):
         self.multi_cell(w = 210.0, h = 40.0, align = 'C', txt = DOCUMENT_KEY, border = 0)
         self.set_font('Arial', '', 12)
 
-     def body(self,name, personal_data_namefile):
+     def body(self, name: str, personal_data : PersonalData):
         #txt = ""
         with open(name, 'rb') as template_document:
             template_str = template_document.readline().decode('UTF-8')
             footer = template_document.readline().decode('UTF-8')
             
-        with open(personal_data_namefile, 'rb') as personal_data_doc:
-            self.rows = []
-            data_rows = int(personal_data_doc.readline().decode('UTF-8'))
+        #personal_data = PersonalData(personal_data_namefile)
 
-            for i in range(data_rows):
-                data_row = personal_data_doc.readline().decode('UTF-8')
-                self.rows.append(data_row.split(','))
-            
-            area = personal_data_doc.readline().decode('UTF-8').strip('\n')
-            alumno = personal_data_doc.readline().decode('UTF-8').strip('\n')
-            fecha = personal_data_doc.readline().decode('UTF-8').strip('\n')
-        
+        area = personal_data.getArea()
+        alumno = personal_data.getName()
+        fecha = personal_data.getDate()
+
+        data_rows = personal_data.getNumberRows()
+        rows = personal_data.getRows()
+
         template_str = template_str.replace(AREA, area)
         template_str = template_str.replace(ALUMNO, alumno)
         footer = footer.replace(FECHA, fecha)
@@ -98,7 +145,7 @@ class Document(FPDF):
         self.ln(2 * th)
         self.set_font('Arial', '', 10)
             
-        for row in self.rows:
+        for row in rows:
             for datum in row:
                 # Enter data in colums
                 self.cell(col_width, 2.1 * th, str(datum).rstrip('\n'), border = 1)
@@ -115,11 +162,11 @@ class Document(FPDF):
         self.multi_cell(w = 0.0, h = 0.0, align = 'C', txt = f"\"LA TÉCNICA AL SERVICIO DE LA PATRIA\"", border = 0)
         self.set_xy(0.0, self.get_y() + 25)
 
-        signer_name = "M. EN C. UN NOMBRE DE PERSONA"
+        signer_name = "M. EN C. JOSÉ ASUNCIÓN ENRÍQUEZ ZÁRATE"
         sign_details = f"{signer_name}\nSUBDIRECTOR DE SERVICIOS EDUCATIVOS\nE INTEGRACIÓN SOCIAL"
         self.multi_cell(w = 0.0, h = 5.0, align = 'C', txt = sign_details, border = 0)
 
-     def generatePDF(self, input_name, output_name):
+     def generatePDF(self, output_name : str, personal_data : PersonalData):
         if not os.path.exists(INPUT_DATA_PATH):
             os.mkdir(INPUT_DATA_PATH)
 
@@ -129,7 +176,7 @@ class Document(FPDF):
         self.add_page()
         self.imagex()
         self.titles()
-        self.body("body.txt", input_name)
+        self.body("body.txt", personal_data)
         print(output_name)
         self.output(output_name, 'F')
         

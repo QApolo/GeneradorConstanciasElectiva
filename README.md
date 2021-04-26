@@ -48,20 +48,20 @@ python3 main.py file.csv
 ```
 
 The csv file must have a structure like the following
-3
-Club de algoritmia, Nombre Profesor, 100, 2
-Club de algoritmia, Nombre Profesor, 100, 2
-Club de algoritmia, Nombre Profesor, 100, 2
-Area a la que pertenece
-Numero de boleta
-Nombre completo con apellidos
-a los dieciocho dias del mes de marzo del dos mil veintiuno
-
-2
-Club de algoritmia, Nombre Profesor, 100, 2
-Club de algoritmia, Nombre Profesor, 100, 2
-Area a la que pertenece
-Numero de boleta
-Otro Nombre completo con apellidos
-a los dieciocho dias del mes de marzo del dos mil veintiuno
-```
+4,,,
+Edgardo Adrián Franco Martínez,64,16-2
+Edgardo Adrián Franco Martínez,64,17-1
+Edgardo Adrián Franco Martínez,64,17-2
+Edgardo Adrián Franco Martínez,64,18-1
+Independientes,,,
+2014630138,,,
+Hugo Michel Barbosa Lopez,,,
+A los diecinueve días del mes,,,
+,,,
+2,,,
+Edgardo Adrián Franco Martínez,64,16-2
+Edgardo Adrián Franco Martínez,64,16-2
+Independientes,,,
+2016630138,,,
+Isaac Sanchez Aguilar,,,
+A los diecinueve días del mes,,,

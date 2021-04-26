@@ -11,7 +11,7 @@ DOCUMENT_KEY = "SSEIS/050/2021"
 LOGO_IPN = "./logoipn.png"
 LOGO_ESCOM = "./logoescom.png"
 
-TITLE_ROW_ACTIVITIES = ["Actividad", "Profesor/Responsable", "Horas", "Semestre"]
+TITLE_ROW_ACTIVITIES = ["Profesor/Responsable", "Horas", "Semestre"]
 
 INPUT_DATA_PATH = "./input_data"
 OUTPUT_DATA_PATH = "./output_data"
@@ -144,12 +144,12 @@ class Document(FPDF):
         epw = self.w -  2 * self.l_margin
  
 
-        columns_width = [epw / 4, epw /  2, epw / 8, epw / 8]
-        final_row = ["", "Total", "", ""]
+        columns_width = [epw /  3, epw / 3, epw / 3]
+        final_row = ["Total", "", ""]
         total_hours = 0
         for row in rows:
-            total_hours += int(str(row[2]).rstrip('\n'))
-        final_row[2] = total_hours
+            total_hours += int(str(row[1]).rstrip('\n'))
+        final_row[1] = total_hours
         rows.append(final_row)
 
 
@@ -182,8 +182,8 @@ class Document(FPDF):
         self.multi_cell(w = 0.0, h = 0.0, align = 'C', txt = f"\"LA TÉCNICA AL SERVICIO DE LA PATRIA\"", border = 0)
         self.set_xy(0.0, self.get_y() + 25)
 
-        signer_name = "M. EN C. JOSÉ ASUNCIÓN ENRÍQUEZ ZÁRATE"
-        sign_details = f"{signer_name}\nSUBDIRECTOR DE SERVICIOS EDUCATIVOS\nE INTEGRACIÓN SOCIAL"
+        signer_name = "M. EN C. EDGARDO ADRIÁN FRANCO HERNÁNDEZ"
+        sign_details = f"{signer_name}\nREPRESENTANTE DEL CLUB DE ALGORITMIA\n"
         self.multi_cell(w = 0.0, h = 5.0, align = 'C', txt = sign_details, border = 0)
 
      def generatePDF(self, output_name : str, personal_data : PersonalData):

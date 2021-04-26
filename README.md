@@ -41,14 +41,19 @@ after these 3 lines you must specify the area
 and lastly a detailed date in spanish
 
 -->
-This script takes a CSV file as input, with the following structure:
-
+This script takes a CSV file as input
+```bash
+python3 main.py file.csv
 ```
+```
+
+The csv file must have a structure like the following
 3
 Club de algoritmia, Nombre Profesor, 100, 2
 Club de algoritmia, Nombre Profesor, 100, 2
 Club de algoritmia, Nombre Profesor, 100, 2
 Area a la que pertenece
+Numero de boleta
 Nombre completo con apellidos
 a los dieciocho dias del mes de marzo del dos mil veintiuno
 
@@ -56,6 +61,7 @@ a los dieciocho dias del mes de marzo del dos mil veintiuno
 Club de algoritmia, Nombre Profesor, 100, 2
 Club de algoritmia, Nombre Profesor, 100, 2
 Area a la que pertenece
+Numero de boleta
 Otro Nombre completo con apellidos
 a los dieciocho dias del mes de marzo del dos mil veintiuno
 ```

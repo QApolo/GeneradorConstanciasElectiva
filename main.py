@@ -34,10 +34,12 @@ if __name__ == '__main__':
                 rows.append(row.split(","))
 
             area = clean(pd_file.readline())
+            id_number = clean(pd_file.readline())
             name = clean(pd_file.readline())
             date = clean(pd_file.readline())
             
             pd.setArea(area)
+            pd.setIdNumber(id_number)
             pd.setName(name)
             pd.setDate(date)
             pd.setNumberRows(nrows)

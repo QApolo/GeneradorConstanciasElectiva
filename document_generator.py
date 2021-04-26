@@ -4,6 +4,7 @@ import os
 AREA = 'AREA'
 ALUMNO = 'ALUMNO'
 FECHA = 'FECHA'
+BOLETA = 'BOLETA'
 
 DOCUMENT_KEY = "SSEIS/050/2021"
 
@@ -32,10 +33,11 @@ class PersonalData:
                 self.rows.append(data_row.split(','))
             
             self.area = personal_data_namefile.readline().decode('UTF-8').strip('\n')
+            self.id_number = personal_data_namefile.readline().decode('UTF-8').strip('\n')
             self.name = personal_data_namefile.readline().decode('UTF-8').strip('\n')
             self.date = personal_data_namefile.readline().decode('UTF-8').strip('\n')
     
-    def setName(self, name):
+    def setName(self, name: str):
         self.name = name
 
     def setArea(self, area):
@@ -50,6 +52,9 @@ class PersonalData:
     def setRows(self, rows):
         self.rows = rows
 
+    def setIdNumber(self, id_number):
+        self.id_number = id_number
+
     def getName(self) -> str:
         return self.name
 
@@ -63,6 +68,9 @@ class PersonalData:
 
     def getRows(self) -> list:
         return self.rows
+
+    def getIdNumber(self) -> str:
+        return self.id_number
 
 
 
@@ -114,14 +122,16 @@ class Document(FPDF):
         #personal_data = PersonalData(personal_data_namefile)
 
         area = personal_data.getArea()
-        alumno = personal_data.getName()
+        alumno = personal_data.getName().upper()
         fecha = personal_data.getDate()
+        boleta = personal_data.getIdNumber()
 
         data_rows = personal_data.getNumberRows()
         rows = personal_data.getRows()
 
         template_str = template_str.replace(AREA, area)
         template_str = template_str.replace(ALUMNO, alumno)
+        template_str = template_str.replace(BOLETA, boleta)
         footer = footer.replace(FECHA, fecha)
 
         #self.set_xy(10.0, self.get_y() +  12)    
@@ -133,24 +143,34 @@ class Document(FPDF):
         th = self.font_size
         epw = self.w -  2 * self.l_margin
  
+
+        columns_width = [epw / 4, epw /  2, epw / 8, epw / 8]
+        final_row = ["", "Total", "", ""]
+        total_hours = 0
+        for row in rows:
+            total_hours += int(str(row[2]).rstrip('\n'))
+        final_row[2] = total_hours
+        rows.append(final_row)
+
+
         # Set column width to 1/4 of effective page width to distribute content 
         # evenly across table and page
-        col_width = epw / 4
-
+        #col_width = epw / 4
+    
         #self.set_xy(10.0, 80.0)  
         self.set_font('Arial', 'B', 10)
 
-        for data in TITLE_ROW_ACTIVITIES:
-            self.cell(col_width, 2 * th, str(data), border = 1)
-        self.ln(2 * th)
+        for data, col_width in zip(TITLE_ROW_ACTIVITIES, columns_width):
+            self.cell(col_width, 1.1 * th, str(data), align = 'C', border = 1)
+        self.ln(1.1 * th)
         self.set_font('Arial', '', 10)
             
         for row in rows:
-            for datum in row:
+            for datum, col_width in zip(row, columns_width):
                 # Enter data in colums
-                self.cell(col_width, 2.1 * th, str(datum).rstrip('\n'), border = 1)
+                self.cell(col_width, 1.1 * th, str(datum).rstrip('\n'), align = 'C', border = 1)
  
-            self.ln(2.1*th)
+            self.ln(1.1*th)
 
         self.set_font('Arial', '', 12)
         self.set_xy(10.0, self.get_y() + data_rows)  #self.set_xy(10.0, 80.0 + 2 * 2 * th  * (data_rows + 1))  

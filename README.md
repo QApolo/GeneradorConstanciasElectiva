@@ -15,6 +15,13 @@ you may need to provide super user privileges e.g
 sudo pip3 install fpdf
 ```
 
+### num2words Install
+This library is used to turn date into string spanish date
+
+```bash
+sudo pip3 install num2words
+```
+
 ## Usage
 <!---
 This script takes input from files inside folder **input_data** by default, this does not exist in the repo, you can either create it yourself or execute the main.py once.
@@ -56,7 +63,6 @@ Edgardo Adrián Franco Martínez,64,18-1
 Independientes,,,
 2014630138,,,
 Hugo Michel Barbosa Lopez,,,
-A los diecinueve días del mes,,,
 ,,,
 2,,,
 Edgardo Adrián Franco Martínez,64,16-2
@@ -64,4 +70,3 @@ Edgardo Adrián Franco Martínez,64,16-2
 Independientes,,,
 2016630138,,,
 Isaac Sanchez Aguilar,,,
-A los diecinueve días del mes,,,

@@ -1,5 +1,6 @@
 from fpdf import FPDF
 import os
+from spanish_date import getSpanishStringDate
 
 AREA = 'AREA'
 ALUMNO = 'ALUMNO'
@@ -8,13 +9,18 @@ BOLETA = 'BOLETA'
 
 DOCUMENT_KEY = "SSEIS/050/2021"
 
-LOGO_IPN = "./logoipn.png"
-LOGO_ESCOM = "./logoescom.png"
+SIGNER_NAME = "M. EN C. EDGARDO ADRIÁN FRANCO HERNÁNDEZ"
+
+LOGO_IPN = "./src/logoipn.png"
+LOGO_ESCOM = "./src/logoescom.png"
+TEMPLATE_TEXT = "./src/body.txt"
 
 TITLE_ROW_ACTIVITIES = ["Profesor/Responsable", "Horas", "Semestre"]
 
+
 INPUT_DATA_PATH = "./input_data"
 OUTPUT_DATA_PATH = "./output_data"
+
 
 class PersonalData:
     def __init__(self):
@@ -43,9 +49,6 @@ class PersonalData:
     def setArea(self, area):
         self.area = area
 
-    def setDate(self, date):
-        self.date = date
-        
     def setNumberRows(self, nrows):
         self.data_rows = nrows
 
@@ -60,9 +63,6 @@ class PersonalData:
 
     def getArea(self) -> str:
         return self.area
-
-    def getDate(self) -> str:
-        return self.date
     def getNumberRows(self) -> int:
         return self.data_rows
 
@@ -123,7 +123,7 @@ class Document(FPDF):
 
         area = personal_data.getArea()
         alumno = personal_data.getName().upper()
-        fecha = personal_data.getDate()
+        fecha = getSpanishStringDate()
         boleta = personal_data.getIdNumber()
 
         data_rows = personal_data.getNumberRows()
@@ -182,8 +182,7 @@ class Document(FPDF):
         self.multi_cell(w = 0.0, h = 0.0, align = 'C', txt = f"\"LA TÉCNICA AL SERVICIO DE LA PATRIA\"", border = 0)
         self.set_xy(0.0, self.get_y() + 25)
 
-        signer_name = "M. EN C. EDGARDO ADRIÁN FRANCO HERNÁNDEZ"
-        sign_details = f"{signer_name}\nREPRESENTANTE DEL CLUB DE ALGORITMIA\n"
+        sign_details = f"{SIGNER_NAME}\nREPRESENTANTE DEL CLUB DE ALGORITMIA\n"
         self.multi_cell(w = 0.0, h = 5.0, align = 'C', txt = sign_details, border = 0)
 
      def generatePDF(self, output_name : str, personal_data : PersonalData):
@@ -196,7 +195,7 @@ class Document(FPDF):
         self.add_page()
         self.imagex()
         self.titles()
-        self.body("body.txt", personal_data)
+        self.body(TEMPLATE_TEXT, personal_data)
         print(output_name)
         self.output(output_name, 'F')
         

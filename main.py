@@ -19,7 +19,7 @@ if __name__ == '__main__':
             if not line:
                 break
 
-            if line.decode('UTF-8').rstrip("\n\r ") == ",,,":
+            if line.decode('UTF-8').rstrip("\n\r ") == ",,":
                 continue
             pd = PersonalData()
             rows = []
@@ -33,15 +33,13 @@ if __name__ == '__main__':
                 row = clean(pd_file.readline())
                 rows.append(row.split(","))
 
-            area = clean(pd_file.readline())
             id_number = clean(pd_file.readline())
+            area = clean(pd_file.readline())
             name = clean(pd_file.readline())
-            date = clean(pd_file.readline())
             
             pd.setArea(area)
             pd.setIdNumber(id_number)
             pd.setName(name)
-            pd.setDate(date)
             pd.setNumberRows(nrows)
             pd.setRows(rows)
 

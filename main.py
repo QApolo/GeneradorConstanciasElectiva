@@ -1,13 +1,17 @@
-from document_generator import Document, PersonalData ,INPUT_DATA_PATH, OUTPUT_DATA_PATH
+from document_generator import Document
+from personal_data_model import PersonalData
 import os
 import sys
 
+OUTPUT_DATA_PATH = "./output_data"
 INPUT_CSV = "./input_data.csv"
+
 if __name__ == '__main__':
 
-    files = os.listdir(INPUT_DATA_PATH)
-    personal_data_list = []
+    if not os.path.exists(OUTPUT_DATA_PATH):
+        os.mkdir(OUTPUT_DATA_PATH)
 
+    personal_data_list = []
     fileInputName = INPUT_CSV
 
     if len(sys.argv) > 1:
@@ -18,13 +22,13 @@ if __name__ == '__main__':
             line = pd_file.readline()
             if not line:
                 break
+            
+            clean = lambda s: s.decode('UTF-8').rstrip(",\n\r ").lstrip(",\n\r ")
 
-            if line.decode('UTF-8').rstrip("\n\r ") == ",,":
+            if clean(line) == "":
                 continue
             pd = PersonalData()
             rows = []
-
-            clean = lambda s: s.decode('UTF-8').rstrip(",\n\r ").lstrip(",\n\r ")
 
             num_str = clean(line)
             nrows = int(num_str)
@@ -34,7 +38,7 @@ if __name__ == '__main__':
                 rows.append(row.split(","))
 
             id_number = clean(pd_file.readline())
-            area = clean(pd_file.readline())
+            area = "independientes" #clean(pd_file.readline())
             name = clean(pd_file.readline())
             
             pd.setArea(area)
@@ -47,15 +51,3 @@ if __name__ == '__main__':
     for pd in personal_data_list:
         pdf = Document()
         pdf.generatePDF(f"{OUTPUT_DATA_PATH}/{pd.getName()}.pdf", pd)
-    
-
-    ### With txt file converting DEPRECATED
-    """for f in files:
-        filename = ".".join(f.split('.')[0:-1])
-        
-        input_name = f"{INPUT_DATA_PATH}/{f}"
-        output_name = f"{OUTPUT_DATA_PATH}/{filename}.pdf"
-        pdf = Document()
-        pdf.generatePDF(input_name, output_name, personal_data)
-    """
-    

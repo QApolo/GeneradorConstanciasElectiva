@@ -1,6 +1,7 @@
 from fpdf import FPDF
 import os
 from spanish_date import getSpanishStringDate
+from personal_data_model import PersonalData
 
 AREA = 'AREA'
 ALUMNO = 'ALUMNO'
@@ -10,68 +11,13 @@ BOLETA = 'BOLETA'
 DOCUMENT_KEY = "SSEIS/050/2021"
 
 SIGNER_NAME = "M. EN C. EDGARDO ADRIÁN FRANCO HERNÁNDEZ"
+POSITION = "REPRESENTANTE DEL CLUB DE ALGORITMIA"
 
 LOGO_IPN = "./src/logoipn.png"
 LOGO_ESCOM = "./src/logoescom.png"
 TEMPLATE_TEXT = "./src/body.txt"
 
 TITLE_ROW_ACTIVITIES = ["Profesor/Responsable", "Horas", "Semestre"]
-
-
-INPUT_DATA_PATH = "./input_data"
-OUTPUT_DATA_PATH = "./output_data"
-
-
-class PersonalData:
-    def __init__(self):
-        pass
-
-    #def __init__(self, filename : str):
-        #self.dataFromFile(filename)
-
-    def dataFromFile(self, filename : str):
-        with open(filename, 'rb') as personal_data_namefile:
-            self.rows = []
-            self.data_rows = int(personal_data_namefile.readline().decode('UTF-8'))
-
-            for i in range(self.data_rows):
-                data_row = personal_data_namefile.readline().decode('UTF-8')
-                self.rows.append(data_row.split(','))
-            
-            self.area = personal_data_namefile.readline().decode('UTF-8').strip('\n')
-            self.id_number = personal_data_namefile.readline().decode('UTF-8').strip('\n')
-            self.name = personal_data_namefile.readline().decode('UTF-8').strip('\n')
-            self.date = personal_data_namefile.readline().decode('UTF-8').strip('\n')
-    
-    def setName(self, name: str):
-        self.name = name
-
-    def setArea(self, area):
-        self.area = area
-
-    def setNumberRows(self, nrows):
-        self.data_rows = nrows
-
-    def setRows(self, rows):
-        self.rows = rows
-
-    def setIdNumber(self, id_number):
-        self.id_number = id_number
-
-    def getName(self) -> str:
-        return self.name
-
-    def getArea(self) -> str:
-        return self.area
-    def getNumberRows(self) -> int:
-        return self.data_rows
-
-    def getRows(self) -> list:
-        return self.rows
-
-    def getIdNumber(self) -> str:
-        return self.id_number
-
 
 
 class Document(FPDF):
@@ -144,13 +90,13 @@ class Document(FPDF):
         epw = self.w -  2 * self.l_margin
  
 
-        columns_width = [epw /  3, epw / 3, epw / 3]
-        final_row = ["Total", "", ""]
+        columns_width = [epw /  2, epw / 4, epw / 4]
+        last_row = ["Total", "", ""]
         total_hours = 0
         for row in rows:
             total_hours += int(str(row[1]).rstrip('\n'))
-        final_row[1] = total_hours
-        rows.append(final_row)
+        last_row[1] = total_hours
+        rows.append(last_row)
 
 
         # Set column width to 1/4 of effective page width to distribute content 
@@ -182,16 +128,10 @@ class Document(FPDF):
         self.multi_cell(w = 0.0, h = 0.0, align = 'C', txt = f"\"LA TÉCNICA AL SERVICIO DE LA PATRIA\"", border = 0)
         self.set_xy(0.0, self.get_y() + 25)
 
-        sign_details = f"{SIGNER_NAME}\nREPRESENTANTE DEL CLUB DE ALGORITMIA\n"
+        sign_details = f"{SIGNER_NAME}\n{POSITION}\n"
         self.multi_cell(w = 0.0, h = 5.0, align = 'C', txt = sign_details, border = 0)
 
-     def generatePDF(self, output_name : str, personal_data : PersonalData):
-        if not os.path.exists(INPUT_DATA_PATH):
-            os.mkdir(INPUT_DATA_PATH)
-
-        if not os.path.exists(OUTPUT_DATA_PATH):
-            os.mkdir(OUTPUT_DATA_PATH)
-            
+     def generatePDF(self, output_name : str, personal_data : PersonalData):            
         self.add_page()
         self.imagex()
         self.titles()
